@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
     <Properties>
-        <Property name="LOG_FORMAT">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="LOG_FORMAT">%d{HH:mm:ss.SSS} [%t] [%l | %L] %-5level %logger{36} - %msg%n</Property>
         <Property name="BASE_DIR">E:/development/fileSource201812R/SpringProject/SpringDataJpa/logs</Property>
     </Properties>
+
+
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -11,6 +13,18 @@
         </Console>
 
         <RollingRandomAccessFile name="LogToRollingRandomAccessFile" fileName="${BASE_DIR}/app.log"
+                                 filePattern="${BASE_DIR}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>${LOG_FORMAT}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="HibernateSQL" fileName="${BASE_DIR}/query.log"
                                  filePattern="${BASE_DIR}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout>
                 <Pattern>${LOG_FORMAT}</Pattern>
@@ -30,8 +44,16 @@
 
     <Loggers>
         <!-- avoid duplicated logs with additivity=false -->
-        <Logger name="com.lyjguy.web.springdatajpa" level="debug" additivity="false">
+        <Logger name="com.lyjguy.web.springdatajpa" level="debug" additivity="true">
             <AppenderRef ref="Async"/>
+        </Logger>
+
+        <Logger name="org.hibernate.SQL" level="debug" additivity="true">
+            <AppenderRef ref="HibernateSQL"/>
+        </Logger>
+
+        <Logger name="org.hibernate.type.descriptor.sql" level="debug" additivity="true">
+            <AppenderRef ref="HibernateSQL"/>
         </Logger>
 
         <Root level="INFO">
