@@ -5,8 +5,6 @@
         <Property name="BASE_DIR">E:/development/fileSource201812R/SpringProject/SpringDataJpa/logs</Property>
     </Properties>
 
-
-
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${LOG_FORMAT}"/>
