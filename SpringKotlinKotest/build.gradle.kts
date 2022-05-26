@@ -17,13 +17,24 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("io.kotest:kotest-runner-junit5-jvm:${Dependency.KoTest.VERSION}")
     runtimeOnly("com.h2database:h2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+        exclude(module = "mockito-core")
+    }
+    testImplementation("io.kotest:kotest-runner-junit5:${Dependency.KoTest.VERSION}")
+    testImplementation("io.kotest:kotest-assertions-core:${Dependency.KoTest.VERSION}")
+    testImplementation("io.kotest:kotest-property:${Dependency.KoTest.VERSION}")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:${Dependency.KoTest.SPRING_VERSION}")
 }
 
 tasks.withType<KotlinCompile> {
