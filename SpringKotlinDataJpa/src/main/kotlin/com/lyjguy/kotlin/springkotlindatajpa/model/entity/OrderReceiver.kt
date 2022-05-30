@@ -9,18 +9,18 @@ import javax.persistence.*
 class OrderReceiver(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0,
 
     var orderId: Long = 0,
-    val name: String,
+    var name: String,
     val address1: String,
     val address2: String,
     val zipcode: String,
     val createAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime?,
-
+    val updatedAt: LocalDateTime? = null,
+) {
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     @JsonBackReference
-    val order: Order
-)
+    lateinit var order: Order
+}
